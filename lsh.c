@@ -8,7 +8,7 @@
  *
  * Return: exit code
  */
-int main(__attribute__((unused))int argc, char *argv[])
+int main(int argc, char *argv[])
 {
 
 	ssize_t bytes_read;
@@ -22,6 +22,11 @@ int main(__attribute__((unused))int argc, char *argv[])
 
 	/* Set up the Ctrl+C signal hander */
 	setup_signal_handler();
+
+	if (argc >= 2)
+	{
+		execute_file_as_input(argv[1], lsh);
+	}
 
 	/* Main shell execution loop */
 	while (SHELL_RUNNING)

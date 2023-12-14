@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <errno.h>
 #include <string.h>
 #include <ctype.h>
@@ -99,6 +100,7 @@ shell_t *initialise_shell(void);
 void free_up(const char *format, ...);
 int exit_shell(shell_t *msh, void (*func)(const char *format, ...));
 void handle_empty_prompt(ssize_t bytes_read, shell_t *lsh);
+void execute_file_as_input(char *filename, shell_t *msh);
 
 /* command execution and parsing funcs. */
 int parse_input(shell_t *lsh);

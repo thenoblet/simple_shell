@@ -20,8 +20,6 @@ int parse_input(shell_t *lsh)
 	lsh->command_array = _strtok(lsh->user_input, "\n");
 	if (lsh->command_array == NULL)
 	{
-		fprintf(stderr, "Please try again...\n");
-		safefree(lsh->command_array);
 		return (-1);
 	}
 

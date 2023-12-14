@@ -8,7 +8,8 @@
  */
 void prompt(void)
 {
-	printf("$ "); /* Print the shell prompt */
+	if (isatty(STDIN_FILENO))
+		printf("$ ");
 
 	/* Flush the standard output to ensure prompt is displayed */
 	fflush(stdout);
@@ -35,7 +36,7 @@ void handle_empty_prompt(ssize_t bytes_read, shell_t *lsh)
 		{
 			/* Print "exit" to the terminal */
 			printf("exit\n");
-			exit_shell(lsh, free_up);
 		}
+		exit_shell(lsh, free_up);
 	}
 }

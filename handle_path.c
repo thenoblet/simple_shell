@@ -45,3 +45,49 @@ int execute_with_path(shell_t *lsh)
 
 	return (-1);
 }
+
+/**
+ * execute_file_as_input - Execute commands from a file in a shell
+ * @filename: The name of the file containing commands
+ * @lsh: Pointer to the shell structure
+ *
+ * Description:
+ *   This function reads commands from a file specified by the
+ *   filename parameter, executes each command, and then exits
+ *   the shell.
+ *   It uses the specified shell structure to store information
+ *   about the shell state.
+ */
+void execute_file_as_input(char *filename, shell_t *lsh)
+{
+	ssize_t bytes_read;
+	int fd;
+	size_t length;
+
+	fd = open(filename, O_RDONLY);
+	if (fd == -1)
+	{
+		free_path_list(&lsh->path_list);
+		fprintf(stderr, "%s: 0: Can't open %s\n", lsh->prog_name, filename);
+		exit(EXIT_FAILURE);
+	}
+
+	bytes_read = _getline(&lsh->user_input, &length, fd);
+
+	if (close(fd) == -1)
+		fprintf(stderr, "Error: unable to close file descriptor #%d\n", fd);
+
+	if (bytes_read == -1)
+	{
+		lsh->exit_code = -1;
+		exit_shell(lsh, free_up);
+	}
+
+	if (bytes_read)
+	{
+		lsh->prog_name = filename;
+		parse_input(lsh);
+	}
+
+	exit_shell(lsh, free_up);
+}
